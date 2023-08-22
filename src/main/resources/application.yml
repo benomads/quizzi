@@ -9,4 +9,5 @@ spring:
     hibernate:
       ddl-auto: update
 
-
+server:
+  port: 443
