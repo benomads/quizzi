@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "question")
 public class QuestionController {
 
-    @GetMapping("allQuestions")
+    @GetMapping("all-questions")
     public String getAllQuestions() {
         return "Hi these are all questions: ";
     }
