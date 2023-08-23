@@ -1,4 +1,4 @@
-package com.benomads.quizzi.entity;
+package com.benomads.quizzi.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

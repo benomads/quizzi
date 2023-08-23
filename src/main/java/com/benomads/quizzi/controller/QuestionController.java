@@ -1,6 +1,6 @@
 package com.benomads.quizzi.controller;
 
-import com.benomads.quizzi.entity.Question;
+import com.benomads.quizzi.model.Question;
 import com.benomads.quizzi.service.QuestionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
