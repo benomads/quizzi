@@ -1,5 +1,6 @@
 package com.benomads.quizzi.controller;
 
+import com.benomads.quizzi.model.QuestionWrapper;
 import com.benomads.quizzi.model.Quiz;
 import com.benomads.quizzi.service.QuizService;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,11 @@ public class QuizController {
     @GetMapping("all-quizzes")
     public ResponseEntity<List<Quiz>> getAllQuizzes() {
         return quizService.getAllQuizzes();
+    }
+
+    @GetMapping("get/{id}")
+    public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(@PathVariable Integer id) {
+        return quizService.getQuizQuestions(id);
     }
 
     @PostMapping("create")
