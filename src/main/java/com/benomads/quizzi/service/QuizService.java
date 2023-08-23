@@ -6,6 +6,7 @@ import com.benomads.quizzi.model.Question;
 import com.benomads.quizzi.model.QuestionWrapper;
 import com.benomads.quizzi.model.Quiz;
 import com.benomads.quizzi.model.Response;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,8 +47,7 @@ public class QuizService {
     }
 
     public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(Integer id) {
-        Optional<Quiz> quiz = quizDao.findAllById(id);
-        List<Question> questionsFromDB = quiz.get().getQuestions();
+        List<Question> questionsFromDB = getQuizQuestionsById(id);
         List<QuestionWrapper> questionsForUser = new ArrayList<>();
 
         for (Question q : questionsFromDB) {
@@ -64,8 +64,7 @@ public class QuizService {
     }
 
     public ResponseEntity<Integer> calculateResult(Integer id, List<Response> responses) {
-        Quiz quiz = quizDao.findById(id).get();
-        List<Question> questions = quiz.getQuestions();
+        List<Question> questions= getQuizQuestionsById(id);
         int right = 0;
         int i = 0;
 
@@ -79,6 +78,9 @@ public class QuizService {
         return new ResponseEntity<>(right, HttpStatus.OK);
     }
 
-
+    private List<Question> getQuizQuestionsById(Integer id) {
+        Optional<Quiz> quiz = quizDao.findAllById(id);
+        return quiz.get().getQuestions();
+    }
 
 }
