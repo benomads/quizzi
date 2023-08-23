@@ -1,11 +1,11 @@
 package com.benomads.quizzi.controller;
 
+import com.benomads.quizzi.model.Quiz;
 import com.benomads.quizzi.service.QuizService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "quiz")
@@ -15,6 +15,11 @@ public class QuizController {
 
     public QuizController(QuizService quizService) {
         this.quizService = quizService;
+    }
+
+    @GetMapping("all-quizzes")
+    public ResponseEntity<List<Quiz>> getAllQuizzes() {
+        return quizService.getAllQuizzes();
     }
 
     @PostMapping("create")

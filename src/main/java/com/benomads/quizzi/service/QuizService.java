@@ -35,4 +35,8 @@ public class QuizService {
 
         return new ResponseEntity<>("SUCCESS", HttpStatus.CREATED);
     }
+
+    public ResponseEntity<List<Quiz>> getAllQuizzes() {
+        return new ResponseEntity<>(quizDao.findAll(), HttpStatus.OK);
+    }
 }
