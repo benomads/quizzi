@@ -21,6 +21,6 @@ public class QuizController {
     public ResponseEntity<String> creatQuiz(@RequestParam String category,
                                             @RequestParam int numberOfQuestions,
                                             @RequestParam String title) {
-        return quizService.creatQuiz(category, numberOfQuestions, title);
+        return quizService.createQuiz(category, numberOfQuestions, title);
     }
 }
