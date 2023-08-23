@@ -26,8 +26,10 @@ public class QuestionService {
         if (!questionDao.existsQuestionByCategory(category))
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
 
-        return new ResponseEntity<>(questionDao.findQuestionByCategory(category),
-                                    HttpStatus.OK);
+        return new ResponseEntity<>(
+            questionDao
+            .findQuestionByCategory(category),
+            HttpStatus.OK);
     }
 
     public ResponseEntity<String> addQuestion(Question question) {
