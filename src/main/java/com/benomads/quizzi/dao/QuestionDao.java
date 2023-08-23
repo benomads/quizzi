@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface QuestionDao extends JpaRepository<Question, Long> {
     List<Question> findQuestionByCategory(String category);
+
+    Boolean existsQuestionByCategory(String category);
 }

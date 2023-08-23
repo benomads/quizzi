@@ -2,8 +2,11 @@ package com.benomads.quizzi.service;
 
 import com.benomads.quizzi.Question;
 import com.benomads.quizzi.dao.QuestionDao;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -15,16 +18,20 @@ public class QuestionService {
         this.questionDao = questionDao;
     }
 
-    public List<Question> getAllQuestions() {
-        return questionDao.findAll();
+    public ResponseEntity<List<Question>> getAllQuestions() {
+        return new ResponseEntity<>(questionDao.findAll(), HttpStatus.OK);
     }
 
-    public List<Question> getQuestionsByCategory(String category) {
-        return questionDao.findQuestionByCategory(category);
+    public ResponseEntity<List<Question>> getQuestionsByCategory(String category) {
+        if (!questionDao.existsQuestionByCategory(category))
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(questionDao.findQuestionByCategory(category),
+                                    HttpStatus.OK);
     }
 
-    public String addQuestion(Question question) {
+    public ResponseEntity<String> addQuestion(Question question) {
         questionDao.save(question);
-        return "success";
+        return new ResponseEntity<>("success", HttpStatus.CREATED);
     }
 }
