@@ -1,6 +1,6 @@
 package com.benomads.quizzi.service;
 
-import com.benomads.quizzi.Question;
+import com.benomads.quizzi.entity.Question;
 import com.benomads.quizzi.dao.QuestionDao;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
