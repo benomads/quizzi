@@ -84,5 +84,7 @@ public class QuizService {
     }
 
     public ResponseEntity<String> deleteQuiz(Integer id) {
+        quizDao.deleteById(id);
+        return new ResponseEntity<>("Quiz Deleted", HttpStatus.OK);
     }
 }
