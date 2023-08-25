@@ -84,6 +84,9 @@ public class QuizService {
     }
 
     public ResponseEntity<String> deleteQuiz(Integer id) {
+        if (!quizDao.existsById(id))
+            return new ResponseEntity<>("NO CONTENT", HttpStatus.NO_CONTENT);
+
         quizDao.deleteById(id);
         return new ResponseEntity<>("Quiz Deleted", HttpStatus.OK);
     }
