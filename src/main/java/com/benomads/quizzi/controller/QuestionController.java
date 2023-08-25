@@ -17,7 +17,7 @@ public class QuestionController {
         this.questionService = questionService;
     }
 
-    @GetMapping("all-questions")
+    @GetMapping("/")
     public ResponseEntity<List<Question>> getAllQuestions() {
         return questionService.getAllQuestions();
     }
@@ -31,5 +31,10 @@ public class QuestionController {
     @PostMapping("add")
     public ResponseEntity<String> addQuestion(@RequestBody Question question) {
         return questionService.addQuestion(question);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteQuestion(@PathVariable Long id) {
+        return questionService.deleteQuestion();
     }
 }

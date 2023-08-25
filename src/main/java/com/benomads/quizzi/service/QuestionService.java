@@ -36,4 +36,7 @@ public class QuestionService {
         questionDao.save(question);
         return new ResponseEntity<>("success", HttpStatus.CREATED);
     }
+
+    public ResponseEntity<String> deleteQuestion() {
+    }
 }
