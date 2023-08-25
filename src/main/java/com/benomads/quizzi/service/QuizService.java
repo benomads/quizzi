@@ -83,4 +83,6 @@ public class QuizService {
         return quiz.get().getQuestions();
     }
 
+    public ResponseEntity<String> deleteQuiz(Integer id) {
+    }
 }
