@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "question")
+@RequestMapping(path = "questions")
 public class QuestionController {
 
     private final QuestionService questionService;

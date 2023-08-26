@@ -65,7 +65,7 @@ public class QuizService {
         return new ResponseEntity<>(questionsForUser, HttpStatus.OK);
     }
 
-    public ResponseEntity<Integer> calculateResult(Integer id, List<Response> responses) {
+    public ResponseEntity<Integer> calculateScore(Integer id, List<Response> responses) {
         List<Question> questions= getQuizQuestionsById(id);
         int right = 0;
         int i = 0;
