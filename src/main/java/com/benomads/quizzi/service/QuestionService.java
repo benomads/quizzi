@@ -2,12 +2,11 @@ package com.benomads.quizzi.service;
 
 import com.benomads.quizzi.model.Question;
 import com.benomads.quizzi.dao.QuestionDao;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class QuestionService {
@@ -18,27 +17,26 @@ public class QuestionService {
         this.questionDao = questionDao;
     }
 
-    public ResponseEntity<List<Question>> getAllQuestions() {
-        return new ResponseEntity<>(questionDao.findAll(), HttpStatus.OK);
+    public List<Question> getAllQuestions() {
+        return questionDao.findAll();
     }
 
-    public ResponseEntity<List<Question>> getQuestionsByCategory(String category) {
+    public List<Question> getQuestionsByCategory(String category) {
         if (!questionDao.existsQuestionByCategory(category))
-            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
+            return new ArrayList<>();
 
-        return new ResponseEntity<>(
-            questionDao
-            .findQuestionByCategory(category),
-            HttpStatus.OK);
+        return questionDao.findQuestionByCategory(category);
     }
 
-    public ResponseEntity<String> addQuestion(Question question) {
-        questionDao.save(question);
-        return new ResponseEntity<>("success", HttpStatus.CREATED);
+    public Question addQuestion(Question question) {
+        return questionDao.save(question);
     }
 
-    public ResponseEntity<String> deleteQuestion(Long id) {
+    public void deleteQuestion(Long id) {
         questionDao.deleteById(id);
-        return new ResponseEntity<>("deleted", HttpStatus.OK);
+    }
+
+    public Optional<Question> getQuestionById(Long id) {
+        return questionDao.findById(id);
     }
 }

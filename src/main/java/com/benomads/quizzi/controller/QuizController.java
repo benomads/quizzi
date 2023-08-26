@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/quiz")
+@RequestMapping("/api/quizzes")
 public class QuizController {
 
     private final QuizService quizService;
@@ -19,24 +19,24 @@ public class QuizController {
         this.quizService = quizService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<Quiz>> getAllQuizzes() {
         return quizService.getAllQuizzes();
     }
 
-    @GetMapping("/get/{id}")
-    public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(@PathVariable Integer id) {
-        return quizService.getQuizQuestions(id);
+    @GetMapping("/{quizId}")
+    public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(@PathVariable Integer quizId) {
+        return quizService.getQuizQuestions(quizId);
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<String> createQuiz(@RequestParam String category,
                                             @RequestParam(name = "numQ") int numberOfQuestions,
                                             @RequestParam String title) {
         return quizService.createQuiz(category, numberOfQuestions, title);
     }
 
-    @PostMapping("/submit/{id}")
+    @PostMapping("/{id}/submit")
     public ResponseEntity<Integer> submitQuiz(@PathVariable Integer id,
                                               @RequestBody List<Response> responses) {
         return quizService.calculateScore(id, responses);
