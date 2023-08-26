@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "questions")
+@RequestMapping(path = "/questions")
 public class QuestionController {
 
     private final QuestionService questionService;
@@ -22,13 +22,13 @@ public class QuestionController {
         return questionService.getAllQuestions();
     }
 
-    @GetMapping("category/{category}")
+    @GetMapping("/category/{category}")
     public ResponseEntity<List<Question>> getQuestionsByCategory(
             @PathVariable String category) {
         return questionService.getQuestionsByCategory(category);
     }
 
-    @PostMapping("add")
+    @PostMapping("/add")
     public ResponseEntity<String> addQuestion(@RequestBody Question question) {
         return questionService.addQuestion(question);
     }
