@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface QuizDao extends JpaRepository<Quiz, Integer> {
     Optional<Quiz> findAllById(Integer id);
+
 }

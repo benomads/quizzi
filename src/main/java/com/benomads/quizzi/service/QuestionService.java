@@ -21,10 +21,11 @@ public class QuestionService {
         return questionDao.findAll();
     }
 
-    public List<Question> getQuestionsByCategory(String category) {
-        if (!questionDao.existsQuestionByCategory(category))
-            return new ArrayList<>();
+    public Optional<Question> getQuestionById(Long id) {
+        return questionDao.findById(id);
+    }
 
+    public List<Question> getQuestionsByCategory(String category) {
         return questionDao.findQuestionByCategory(category);
     }
 
@@ -36,7 +37,5 @@ public class QuestionService {
         questionDao.deleteById(id);
     }
 
-    public Optional<Question> getQuestionById(Long id) {
-        return questionDao.findById(id);
-    }
+
 }

@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,8 +49,10 @@ public class QuizService {
         return new ResponseEntity<>(quizDao.findAll(), HttpStatus.OK);
     }
 
-    public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(Integer id) {
+    public List<QuestionWrapper> getQuizQuestions(Integer id) {
         List<Question> questionsFromDB = getQuizQuestionsById(id);
+        if (questionsFromDB.isEmpty())
+            return Collections.singletonList((QuestionWrapper) questionsFromDB);
         List<QuestionWrapper> questionsForUser = new ArrayList<>();
 
         for (Question q : questionsFromDB) {
@@ -62,7 +65,7 @@ public class QuizService {
             questionsForUser.add(questionWrapper);
         }
 
-        return new ResponseEntity<>(questionsForUser, HttpStatus.OK);
+        return questionsForUser;
     }
 
     public ResponseEntity<Integer> calculateScore(Integer id, List<Response> responses) {
@@ -84,14 +87,15 @@ public class QuizService {
 
     private List<Question> getQuizQuestionsById(Integer id) {
         Optional<Quiz> quiz = quizDao.findAllById(id);
-        return quiz.get().getQuestions();
+        return quiz.isPresent() ? quiz.get().getQuestions() : new ArrayList<>() ;
     }
 
-    public ResponseEntity<String> deleteQuiz(Integer id) {
-        if (!quizDao.existsById(id))
-            return new ResponseEntity<>("NO CONTENT", HttpStatus.NO_CONTENT);
+    public String deleteQuiz(Integer id) {
+        if (!quizDao.existsById(id)) {
+            return "NO CONTENT";
+        }
 
         quizDao.deleteById(id);
-        return new ResponseEntity<>("Quiz Deleted", HttpStatus.OK);
+        return "Quiz Deleted";
     }
 }
