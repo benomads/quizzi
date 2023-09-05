@@ -1,7 +1,8 @@
 package com.benomads.quizzi.controller;
 
+import com.benomads.quizzi.exception.QuizNotFoundException;
 import com.benomads.quizzi.model.QuestionWrapper;
-import com.benomads.quizzi.model.Quiz;
+import com.benomads.quizzi.entity.Quiz;
 import com.benomads.quizzi.model.Response;
 import com.benomads.quizzi.service.QuizService;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +26,8 @@ public class QuizController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(@PathVariable Integer id) {
-        return ResponseEntity.ok(quizService.getQuizQuestions(id));
+    public ResponseEntity<List<QuestionWrapper>> getQuizById(@PathVariable Integer id) throws QuizNotFoundException {
+        return ResponseEntity.ok(quizService.getQuizById(id));
     }
 
     @PostMapping

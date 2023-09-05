@@ -3,9 +3,10 @@ package com.benomads.quizzi.service;
 import com.benomads.quizzi.dao.QuestionDao;
 import com.benomads.quizzi.dao.QuizDao;
 
-import com.benomads.quizzi.model.Question;
+import com.benomads.quizzi.entity.Question;
+import com.benomads.quizzi.exception.QuizNotFoundException;
 import com.benomads.quizzi.model.QuestionWrapper;
-import com.benomads.quizzi.model.Quiz;
+import com.benomads.quizzi.entity.Quiz;
 import com.benomads.quizzi.model.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,21 +49,14 @@ public class QuizService {
         return new ResponseEntity<>(quizDao.findAll(), HttpStatus.OK);
     }
 
-    public List<QuestionWrapper> getQuizQuestions(Integer id) {
+    public List<QuestionWrapper> getQuizById(Integer id) throws QuizNotFoundException {
         List<Question> questionsFromDB = getQuizQuestionsById(id);
         if (questionsFromDB.isEmpty())
-            return Collections.singletonList((QuestionWrapper) questionsFromDB);
-        List<QuestionWrapper> questionsForUser = new ArrayList<>();
+            throw new QuizNotFoundException("Quiz is not exist!");
 
-        for (Question q : questionsFromDB) {
-            QuestionWrapper questionWrapper =new QuestionWrapper(q.getId(),
-                                                                 q.getQuestionTitle(),
-                                                                 q.getOption1(),
-                                                                 q.getOption2(),
-                                                                 q.getOption3(),
-                                                                 q.getOption4());
-            questionsForUser.add(questionWrapper);
-        }
+        List<QuestionWrapper> questionsForUser = new ArrayList<>();
+        for (Question q : questionsFromDB)
+            questionsForUser.add(QuestionWrapper.toModel(q));
 
         return questionsForUser;
     }
@@ -74,7 +67,7 @@ public class QuizService {
         int i = 0;
 
         for (Response resp : responses) {
-            String response = resp.getResponse();
+            String response = resp.getScore();
             String correctAnswer = questions.get(i).getCorrectAnswer();
 
             if (response.equals(correctAnswer))
@@ -87,8 +80,9 @@ public class QuizService {
 
     private List<Question> getQuizQuestionsById(Integer id) {
         Optional<Quiz> quiz = quizDao.findAllById(id);
-        return quiz.isPresent() ? quiz.get().getQuestions() : new ArrayList<>() ;
+        return quiz.get().getQuestions();
     }
+
 
     public String deleteQuiz(Integer id) {
         if (!quizDao.existsById(id)) {

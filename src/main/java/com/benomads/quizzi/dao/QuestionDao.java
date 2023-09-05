@@ -1,6 +1,6 @@
 package com.benomads.quizzi.dao;
 
-import com.benomads.quizzi.model.Question;
+import com.benomads.quizzi.entity.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

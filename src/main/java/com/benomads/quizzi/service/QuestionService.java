@@ -1,7 +1,8 @@
 package com.benomads.quizzi.service;
 
-import com.benomads.quizzi.model.Question;
+import com.benomads.quizzi.entity.Question;
 import com.benomads.quizzi.dao.QuestionDao;
+import com.benomads.quizzi.exception.QuestionNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +21,11 @@ public class QuestionService {
         return questionDao.findAll();
     }
 
-    public Optional<Question> getQuestionById(Long id) {
-        return questionDao.findById(id);
+    public Optional<Question> getQuestionById(Long id) throws QuestionNotFoundException {
+        Optional<Question> question = questionDao.findById(id);
+        if (question.isEmpty())
+            throw new QuestionNotFoundException("The question not found!");
+        return question;
     }
 
     public List<Question> getQuestionsByCategory(String category) {
