@@ -1,7 +1,5 @@
 package com.benomads.quizzi.controller;
 
-
-import com.benomads.quizzi.exception.QuestionNotFoundException;
 import com.benomads.quizzi.model.ApiResponse;
 import com.benomads.quizzi.entity.Question;
 import com.benomads.quizzi.service.QuestionService;
@@ -26,23 +24,24 @@ public class QuestionController {
     @GetMapping()
     public ResponseEntity<List<Question>> getAllQuestions() {
         List<Question> questions = questionService.getAllQuestions();
+
         return ResponseEntity.ok(questions);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getQuestionById(@PathVariable Long id){
-        try {
-            return ResponseEntity.ok(questionService.getQuestionById(id));
-        } catch (QuestionNotFoundException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+    public ResponseEntity<Optional<Question>> getQuestionById(@PathVariable Long id){
+        Optional<Question> question = questionService.getQuestionById(id);
 
-        }
+        return ResponseEntity.ok(question);
+
     }
 
     @GetMapping("/category/{category}")
     public ResponseEntity<List<Question>> getQuestionsByCategory(
             @PathVariable String category) {
+
         List<Question> questions = questionService.getQuestionsByCategory(category);
+
         return ResponseEntity.ok(questions);
     }
 
@@ -58,7 +57,9 @@ public class QuestionController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteQuestion(@PathVariable Long id) {
         questionService.deleteQuestion(id);
-        return ResponseEntity.ok(
-            new ApiResponse(true, "Question deleted successfully!"));
+        return ResponseEntity.ok().body(
+            new ApiResponse(
+            true,
+            "Question deleted successfully!"));
     }
 }

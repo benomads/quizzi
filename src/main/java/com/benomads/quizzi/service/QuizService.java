@@ -4,7 +4,6 @@ import com.benomads.quizzi.dao.QuestionDao;
 import com.benomads.quizzi.dao.QuizDao;
 
 import com.benomads.quizzi.entity.Question;
-import com.benomads.quizzi.exception.QuizNotFoundException;
 import com.benomads.quizzi.model.QuestionWrapper;
 import com.benomads.quizzi.entity.Quiz;
 import com.benomads.quizzi.model.Response;
@@ -49,10 +48,8 @@ public class QuizService {
         return new ResponseEntity<>(quizDao.findAll(), HttpStatus.OK);
     }
 
-    public List<QuestionWrapper> getQuizById(Integer id) throws QuizNotFoundException {
+    public List<QuestionWrapper> getQuizById(Integer id) {
         List<Question> questionsFromDB = getQuizQuestionsById(id);
-        if (questionsFromDB.isEmpty())
-            throw new QuizNotFoundException("Quiz is not exist!");
 
         List<QuestionWrapper> questionsForUser = new ArrayList<>();
         for (Question q : questionsFromDB)
@@ -80,7 +77,9 @@ public class QuizService {
 
     private List<Question> getQuizQuestionsById(Integer id) {
         Optional<Quiz> quiz = quizDao.findAllById(id);
+
         return quiz.get().getQuestions();
+
     }
 
 

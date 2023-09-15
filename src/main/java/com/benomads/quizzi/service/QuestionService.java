@@ -21,15 +21,21 @@ public class QuestionService {
         return questionDao.findAll();
     }
 
-    public Optional<Question> getQuestionById(Long id) throws QuestionNotFoundException {
+    public Optional<Question> getQuestionById(Long id)  {
         Optional<Question> question = questionDao.findById(id);
         if (question.isEmpty())
-            throw new QuestionNotFoundException("The question not found!");
+            throw new QuestionNotFoundException(String.format("Question with id=%d not found", id));
+
         return question;
     }
 
     public List<Question> getQuestionsByCategory(String category) {
-        return questionDao.findQuestionByCategory(category);
+        List<Question> questions = questionDao.findQuestionByCategory(category);
+
+        if (questions.isEmpty())
+            throw new QuestionNotFoundException(String.format("Questions with category - '%s' not found", category));
+
+        return questions;
     }
 
     public Question addQuestion(Question question) {
