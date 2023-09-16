@@ -1,6 +1,6 @@
 package com.benomads.quizzi.dao;
 
-import com.benomads.quizzi.model.Question;
+import com.benomads.quizzi.entity.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -13,6 +13,8 @@ public interface QuestionDao extends JpaRepository<Question, Long> {
     List<Question> findQuestionByCategory(String category);
 
     Boolean existsQuestionByCategory(String category);
+
+
 
     @Query(value = "SELECT * FROM question q WHERE q.category=:category " +
                    "ORDER BY RANDOM() LIMIT :numberOfQuestions",

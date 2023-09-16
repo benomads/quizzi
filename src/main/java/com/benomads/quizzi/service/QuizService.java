@@ -3,9 +3,9 @@ package com.benomads.quizzi.service;
 import com.benomads.quizzi.dao.QuestionDao;
 import com.benomads.quizzi.dao.QuizDao;
 
-import com.benomads.quizzi.model.Question;
+import com.benomads.quizzi.entity.Question;
 import com.benomads.quizzi.model.QuestionWrapper;
-import com.benomads.quizzi.model.Quiz;
+import com.benomads.quizzi.entity.Quiz;
 import com.benomads.quizzi.model.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,21 +48,14 @@ public class QuizService {
         return new ResponseEntity<>(quizDao.findAll(), HttpStatus.OK);
     }
 
-    public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(Integer id) {
+    public List<QuestionWrapper> getQuizById(Integer id) {
         List<Question> questionsFromDB = getQuizQuestionsById(id);
+
         List<QuestionWrapper> questionsForUser = new ArrayList<>();
+        for (Question q : questionsFromDB)
+            questionsForUser.add(QuestionWrapper.toModel(q));
 
-        for (Question q : questionsFromDB) {
-            QuestionWrapper questionWrapper =new QuestionWrapper(q.getId(),
-                                                                 q.getQuestionTitle(),
-                                                                 q.getOption1(),
-                                                                 q.getOption2(),
-                                                                 q.getOption3(),
-                                                                 q.getOption4());
-            questionsForUser.add(questionWrapper);
-        }
-
-        return new ResponseEntity<>(questionsForUser, HttpStatus.OK);
+        return questionsForUser;
     }
 
     public ResponseEntity<Integer> calculateScore(Integer id, List<Response> responses) {
@@ -71,7 +64,7 @@ public class QuizService {
         int i = 0;
 
         for (Response resp : responses) {
-            String response = resp.getResponse();
+            String response = resp.getScore();
             String correctAnswer = questions.get(i).getCorrectAnswer();
 
             if (response.equals(correctAnswer))
@@ -82,16 +75,22 @@ public class QuizService {
         return new ResponseEntity<>(right, HttpStatus.OK);
     }
 
-    public ResponseEntity<String> deleteQuiz(Integer id) {
-        if (!quizDao.existsById(id))
-            return new ResponseEntity<>("NO CONTENT", HttpStatus.NO_CONTENT);
-
-        quizDao.deleteById(id);
-        return new ResponseEntity<>("Quiz Deleted", HttpStatus.OK);
-    }
 
     private List<Question> getQuizQuestionsById(Integer id) {
         Optional<Quiz> quiz = quizDao.findAllById(id);
+
         return quiz.get().getQuestions();
+
     }
+
+
+    public String deleteQuiz(Integer id) {
+        if (!quizDao.existsById(id)) {
+            return "NO CONTENT";
+        }
+
+        quizDao.deleteById(id);
+        return "Quiz Deleted";
+    }
+
 }

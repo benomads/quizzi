@@ -1,5 +1,6 @@
-package com.benomads.quizzi.model;
+package com.benomads.quizzi.entity;
 
+import com.benomads.quizzi.entity.Question;
 import jakarta.persistence.*;
 import lombok.Data;
 
