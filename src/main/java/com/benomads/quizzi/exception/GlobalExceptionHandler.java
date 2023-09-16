@@ -13,7 +13,8 @@ import java.time.ZonedDateTime;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(QuestionNotFoundException.class)
-    public ResponseEntity<Object> handleQuestionNotFoundException(Exception e, HttpServletRequest request) {
+    public ResponseEntity<Object> handleQuestionNotFoundException(Exception ex,
+                                                                  HttpServletRequest request) { //We need to replace Exception.class
         HttpStatus httpStatus = HttpStatus.NOT_FOUND;
 
         ApiException apiException =
@@ -21,10 +22,28 @@ public class GlobalExceptionHandler {
                     ZonedDateTime.now(ZoneId.of("UTC+6")),
                     httpStatus.value(),
                     httpStatus,
-                    e.getMessage(),
+                    ex.getMessage(),
                     request.getRequestURI()
             );
 
+
+        return new ResponseEntity<>(apiException, httpStatus);
+    }
+
+    @ExceptionHandler(QuestionAlreadyExistException.class)
+    public ResponseEntity<Object> handleQuestionAlreadyExistException(Exception ex,
+                                                                      HttpServletRequest request) {
+        HttpStatus httpStatus = HttpStatus.FOUND;
+
+        ApiException apiException =
+            new ApiException(
+                    ZonedDateTime.now(ZoneId.of("UTC+6")),
+                    httpStatus.value(),
+                    httpStatus,
+                    ex.getMessage(),
+                    request.getRequestURI()
+
+            );
 
         return new ResponseEntity<>(apiException, httpStatus);
     }

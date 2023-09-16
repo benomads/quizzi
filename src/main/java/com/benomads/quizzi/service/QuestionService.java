@@ -2,6 +2,7 @@ package com.benomads.quizzi.service;
 
 import com.benomads.quizzi.entity.Question;
 import com.benomads.quizzi.dao.QuestionDao;
+import com.benomads.quizzi.exception.QuestionAlreadyExistException;
 import com.benomads.quizzi.exception.QuestionNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -30,19 +31,32 @@ public class QuestionService {
     }
 
     public List<Question> getQuestionsByCategory(String category) {
-        List<Question> questions = questionDao.findQuestionByCategory(category);
-
-        if (questions.isEmpty())
+        if (!questionDao.existsQuestionByCategory(category))
             throw new QuestionNotFoundException(String.format("Questions with category - '%s' not found", category));
 
-        return questions;
+        return questionDao.findQuestionByCategory(category);
     }
 
     public Question addQuestion(Question question) {
+        String questionTitle = question.getQuestionTitle();
+        String category = question.getCategory();
+        List<Question> questionsFromDB = questionDao.findQuestionByCategory(category);
+
+        for (Question question1 : questionsFromDB) {
+            if (question1.getQuestionTitle().equals(questionTitle)) {
+                throw new QuestionAlreadyExistException(
+                    "Question already exist. Question with id="
+                        + question1.getId() + " have same title of question");
+            }
+        }
         return questionDao.save(question);
     }
 
     public void deleteQuestion(Long id) {
+        Optional<Question> question = questionDao.findById(id);
+        if (question.isEmpty())
+            throw new QuestionNotFoundException(String.format("Question with id=%d doesn't exist", id));
+
         questionDao.deleteById(id);
     }
 
