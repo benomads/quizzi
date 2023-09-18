@@ -38,17 +38,13 @@ public class QuestionService {
     }
 
     public Question addQuestion(Question question) {
-        String questionTitle = question.getQuestionTitle();
-        String category = question.getCategory();
-        List<Question> questionsFromDB = questionDao.findQuestionByCategory(category);
+        String questionTitleFromRequest = question.getQuestionTitle();
 
-        for (Question question1 : questionsFromDB) {
-            if (question1.getQuestionTitle().equals(questionTitle)) {
-                throw new QuestionAlreadyExistException(
-                    "Question already exist. Question with id="
-                        + question1.getId() + " have same title of question");
-            }
-        }
+        if (questionDao.existsQuestionByQuestionTitle(questionTitleFromRequest))
+            throw new QuestionAlreadyExistException(
+                "Question already exist. Question with id="
+                    + question.getId() + " have same title of question");
+
         return questionDao.save(question);
     }
 
