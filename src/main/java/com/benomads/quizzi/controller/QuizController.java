@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -33,10 +34,14 @@ public class QuizController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createQuiz(@RequestParam String category,
+    public ResponseEntity<?> createQuiz(@RequestParam String category,
                                             @RequestParam(name = "numQ") int numberOfQuestions,
                                             @RequestParam String title) {
-        return quizService.createQuiz(category, numberOfQuestions, title);
+        Quiz quiz = quizService.createQuiz(category, numberOfQuestions, title);
+        if (quiz.getId() != null)
+            return ResponseEntity.created(URI.create("/api/questions" + quiz.getId()))
+                .body(new ApiResponse(true, "Question created successfully!"));
+        return ResponseEntity.badRequest().body(new ApiResponse(false, "Bad request!"));
     }
 
     @PostMapping("/{id}/submit")
@@ -44,6 +49,7 @@ public class QuizController {
                                               @RequestBody List<Response> responses) {
         return quizService.calculateScore(id, responses);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteQuiz(@PathVariable Integer id) {
@@ -54,4 +60,5 @@ public class QuizController {
                 String.format(
                     "Quiz with id=%d deleted successfully!", id)));
     }
+
 }

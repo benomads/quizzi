@@ -32,6 +32,7 @@ public class QuizService {
         this.questionDao = questionDao;
     }
 
+
     public List<Quiz> getAllQuizzes() {
         return quizDao.findAll();
     }
@@ -46,9 +47,10 @@ public class QuizService {
         return questionsForUser;
     }
 
-    public ResponseEntity<String> createQuiz(String category,
-                                            int numberOfQuestions,
-                                            String title) {
+  
+    public Quiz createQuiz(String category,
+                           int numberOfQuestions,
+                           String title) {
         List<Question> questions = questionDao.findRandomQuestionsByCategory(category, numberOfQuestions);
 
         Quiz quiz = new Quiz();
@@ -56,7 +58,7 @@ public class QuizService {
         quiz.setQuestions(questions);
         quizDao.save(quiz);
 
-        return new ResponseEntity<>("SUCCESS", HttpStatus.CREATED);
+        return quiz;
     }
 
 
@@ -80,6 +82,7 @@ public class QuizService {
         return new ResponseEntity<>(right, HttpStatus.OK);
     }
 
+
     private List<Question> getQuizQuestionsById(Integer id) {
         Optional<Quiz> quiz = quizDao.findAllById(id);
 
@@ -96,4 +99,5 @@ public class QuizService {
 
         quizDao.deleteById(id);
     }
+
 }
