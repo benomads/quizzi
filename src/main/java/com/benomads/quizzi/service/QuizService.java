@@ -4,6 +4,7 @@ import com.benomads.quizzi.dao.QuestionDao;
 import com.benomads.quizzi.dao.QuizDao;
 
 import com.benomads.quizzi.entity.Question;
+import com.benomads.quizzi.exception.QuizNotFoundException;
 import com.benomads.quizzi.model.QuestionWrapper;
 import com.benomads.quizzi.entity.Quiz;
 import com.benomads.quizzi.model.Response;
@@ -31,21 +32,9 @@ public class QuizService {
         this.questionDao = questionDao;
     }
 
-    public Quiz createQuiz(String category,
-                                            int numberOfQuestions,
-                                            String title) {
-        List<Question> questions = questionDao.findRandomQuestionsByCategory(category, numberOfQuestions);
 
-        Quiz quiz = new Quiz();
-        quiz.setTitle(title);
-        quiz.setQuestions(questions);
-        quizDao.save(quiz);
-
-        return quiz;
-    }
-
-    public ResponseEntity<List<Quiz>> getAllQuizzes() {
-        return new ResponseEntity<>(quizDao.findAll(), HttpStatus.OK);
+    public List<Quiz> getAllQuizzes() {
+        return quizDao.findAll();
     }
 
     public List<QuestionWrapper> getQuizById(Integer id) {
@@ -57,6 +46,24 @@ public class QuizService {
 
         return questionsForUser;
     }
+
+  
+    public Quiz createQuiz(String category,
+                           int numberOfQuestions,
+                           String title) {
+        List<Question> questions = questionDao.findRandomQuestionsByCategory(category, numberOfQuestions);
+
+        Quiz quiz = new Quiz();
+        quiz.setTitle(title);
+        quiz.setQuestions(questions);
+        quizDao.save(quiz);
+
+        return quiz;
+    }
+
+
+
+
 
     public ResponseEntity<Integer> calculateScore(Integer id, List<Response> responses) {
         List<Question> questions= getQuizQuestionsById(id);
@@ -84,13 +91,13 @@ public class QuizService {
     }
 
 
-    public String deleteQuiz(Integer id) {
+    public void deleteQuiz(Integer id) {
         if (!quizDao.existsById(id)) {
-            return "NO CONTENT";
+            throw new QuizNotFoundException(String.format(
+                "Question with id=%d doesn't exist)", id));
         }
 
         quizDao.deleteById(id);
-        return "Quiz Deleted";
     }
 
 }
