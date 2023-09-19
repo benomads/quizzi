@@ -33,9 +33,9 @@ public class QuizController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createQuiz(@RequestParam String category,
-                                            @RequestParam(name = "numQ") int numberOfQuestions,
-                                            @RequestParam String title) {
+    public Quiz createQuiz(@RequestParam String category,
+                           @RequestParam(name = "numQ") int numberOfQuestions,
+                           @RequestParam String title) {
         return quizService.createQuiz(category, numberOfQuestions, title);
     }
 
