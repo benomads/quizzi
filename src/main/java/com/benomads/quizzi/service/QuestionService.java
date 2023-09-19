@@ -50,8 +50,10 @@ public class QuestionService {
 
     public void deleteQuestion(Long id) {
         Optional<Question> question = questionDao.findById(id);
-        if (question.isEmpty())
-            throw new QuestionNotFoundException(String.format("Question with id=%d doesn't exist", id));
+        if (question.isEmpty()) {
+            throw new QuestionNotFoundException(String.format(
+                "Question with id=%d doesn't exist", id));
+        }
 
         questionDao.deleteById(id);
     }

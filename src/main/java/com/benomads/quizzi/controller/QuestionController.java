@@ -60,6 +60,7 @@ public class QuestionController {
         return ResponseEntity.ok().body(
             new ApiResponse(
             true,
-            "Question deleted successfully!"));
+            String.format(
+                "Question with id=%d deleted successfully!", id)));
     }
 }
