@@ -1,9 +1,11 @@
 package com.benomads.quizzi.controller;
 
+import com.benomads.quizzi.model.ApiResponse;
 import com.benomads.quizzi.model.QuestionWrapper;
 import com.benomads.quizzi.entity.Quiz;
 import com.benomads.quizzi.model.Response;
 import com.benomads.quizzi.service.QuizService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +23,7 @@ public class QuizController {
 
     @GetMapping()
     public ResponseEntity<List<Quiz>> getAllQuizzes() {
-        return quizService.getAllQuizzes();
+        return ResponseEntity.ok(quizService.getAllQuizzes());
     }
 
     @GetMapping("/{id}")
@@ -44,8 +46,12 @@ public class QuizController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteQuiz(@PathVariable Integer id) {
-
-        return ResponseEntity.ok( quizService.deleteQuiz(id));
+    public ResponseEntity<ApiResponse> deleteQuiz(@PathVariable Integer id) {
+        quizService.deleteQuiz(id);
+        return ResponseEntity.ok().body(
+            new ApiResponse(
+                true,
+                String.format(
+                    "Quiz with id=%d deleted successfully!", id)));
     }
 }
