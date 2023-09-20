@@ -46,17 +46,26 @@ public class QuizService {
         return questionsForUser;
     }
 
-    public ResponseEntity<String> createQuiz(String category,
-                                            int numberOfQuestions,
-                                            String title) {
+    // This method create(assembling) quiz randomly with existing questions
+    public Quiz createQuiz(String category,
+                           int numberOfQuestions,
+                           String title) {
         List<Question> questions = questionDao.findRandomQuestionsByCategory(category, numberOfQuestions);
+
+        if (questions.isEmpty())
+            throw new RuntimeException("Something is wrong!!!");
 
         Quiz quiz = new Quiz();
         quiz.setTitle(title);
         quiz.setQuestions(questions);
-        quizDao.save(quiz);
+        return quizDao.save(quiz);
+    }
 
-        return new ResponseEntity<>("SUCCESS", HttpStatus.CREATED);
+    public Quiz createQuizes(List<Question> questions) {
+        Quiz quiz = new Quiz();
+        quiz.setQuestions(questions);
+
+        return quizDao.save(quiz);
     }
 
 

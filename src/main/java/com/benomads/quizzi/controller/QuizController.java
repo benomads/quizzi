@@ -1,13 +1,19 @@
 package com.benomads.quizzi.controller;
 
+import com.benomads.quizzi.entity.Question;
 import com.benomads.quizzi.model.ApiResponse;
 import com.benomads.quizzi.model.QuestionWrapper;
 import com.benomads.quizzi.entity.Quiz;
 import com.benomads.quizzi.model.Response;
+import com.benomads.quizzi.service.QuestionService;
 import com.benomads.quizzi.service.QuizService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -22,20 +28,32 @@ public class QuizController {
 
     @GetMapping()
     public ResponseEntity<List<Quiz>> getAllQuizzes() {
-        return ResponseEntity.ok(quizService.getAllQuizzes());
+        List<Quiz> quizzes = quizService.getAllQuizzes();
+
+        return ResponseEntity.ok(quizzes);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<List<QuestionWrapper>> getQuizById(@PathVariable Integer id) {
-        return ResponseEntity.ok(quizService.getQuizById(id));
+        List<QuestionWrapper> questionWrappers = quizService.getQuizById(id);
 
+        return ResponseEntity.ok(questionWrappers);
     }
 
-    @PostMapping
-    public ResponseEntity<String> createQuiz(@RequestParam String category,
-                           @RequestParam(name = "numQ") int numberOfQuestions,
-                           @RequestParam String title) {
-        return quizService.createQuiz(category, numberOfQuestions, title);
+    // This POST request create(assembling) quiz randomly with existing questions
+    @PostMapping("/random")
+    public ResponseEntity<ApiResponse> createQuizWithExistsQuestions(@RequestParam String category,
+                                             @RequestParam("numQ") int numberOfQuestions,
+                                             @RequestParam String title) {
+        Quiz createdQuiz = quizService.createQuiz(category, numberOfQuestions, title);
+        return ResponseEntity.created(URI.create("/api/quizzes" + createdQuiz.getId())).body(new ApiResponse(true, "Quiz created successfully!"));
+    }
+
+    @PostMapping("/rt")
+    public ResponseEntity<ApiResponse> createQuiz(@RequestBody List<Question> questions) {
+        Quiz createdQuiz = quizService.createQuizes(questions);
+        return ResponseEntity.created(URI.create("/api/quizzes" + createdQuiz.getId()))
+                             .body(new ApiResponse(true, "Quiz created successfully!"));
     }
 
     @PostMapping("/{id}/submit")
