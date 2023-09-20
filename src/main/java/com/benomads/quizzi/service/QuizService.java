@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class QuizService {
@@ -32,10 +33,11 @@ public class QuizService {
     }
 
     public List<QuestionWrapper> getQuizById(Integer id) {
-        List<Question> questionsFromDB = quizDao.findAllById(id).get().getQuestions();
-        if (questionsFromDB.isEmpty())
+        Optional<Quiz> quiz = quizDao.findAllById(id);
+        if (quiz.isEmpty())
             throw new QuizNotFoundException(String.format("Quiz with id=%d not found!", id));
 
+        List<Question> questionsFromDB = quiz.get().getQuestions();
         List<QuestionWrapper> questionsForUser = new ArrayList<>();
         for (Question q : questionsFromDB)
             questionsForUser.add(QuestionWrapper.toModel(q));
@@ -69,7 +71,12 @@ public class QuizService {
 
     public Integer calculateScore(Integer id,
                                   List<Response> responses) {
-        List<Question> questions = quizDao.findAllById(id).get().getQuestions();
+        Optional<Quiz> quiz = quizDao.findAllById(id);
+        if (quiz.isEmpty())
+            throw new QuizNotFoundException(String.format(
+                "Quiz with id=%d not found!", id));
+
+        List<Question> questions = quiz.get().getQuestions();
         int right = 0;
         int next = 0;
 

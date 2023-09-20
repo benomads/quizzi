@@ -5,12 +5,8 @@ import com.benomads.quizzi.model.ApiResponse;
 import com.benomads.quizzi.model.QuestionWrapper;
 import com.benomads.quizzi.entity.Quiz;
 import com.benomads.quizzi.model.Response;
-import com.benomads.quizzi.service.QuestionService;
 import com.benomads.quizzi.service.QuizService;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletRequestWrapper;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
