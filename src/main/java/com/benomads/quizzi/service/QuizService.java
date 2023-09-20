@@ -2,7 +2,6 @@ package com.benomads.quizzi.service;
 
 import com.benomads.quizzi.dao.QuestionDao;
 import com.benomads.quizzi.dao.QuizDao;
-
 import com.benomads.quizzi.entity.Question;
 import com.benomads.quizzi.exception.QuizNotFoundException;
 import com.benomads.quizzi.model.QuestionWrapper;
@@ -11,14 +10,10 @@ import com.benomads.quizzi.model.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class QuizService {
@@ -37,7 +32,9 @@ public class QuizService {
     }
 
     public List<QuestionWrapper> getQuizById(Integer id) {
-        List<Question> questionsFromDB = getQuizQuestionsById(id);
+        List<Question> questionsFromDB = quizDao.findAllById(id).get().getQuestions();
+        if (questionsFromDB.isEmpty())
+            throw new QuizNotFoundException(String.format("Quiz with id=%d not found!", id));
 
         List<QuestionWrapper> questionsForUser = new ArrayList<>();
         for (Question q : questionsFromDB)
@@ -53,7 +50,8 @@ public class QuizService {
         List<Question> questions = questionDao.findRandomQuestionsByCategory(category, numberOfQuestions);
 
         if (questions.isEmpty())
-            throw new RuntimeException("Something is wrong!!!");
+            throw new RuntimeException("Not Found any Question!!!");
+
 
         Quiz quiz = new Quiz();
         quiz.setTitle(title);
@@ -61,41 +59,31 @@ public class QuizService {
         return quizDao.save(quiz);
     }
 
-    public Quiz createQuizes(List<Question> questions) {
+    public Quiz createQuiz(List<Question> questions) {
+
         Quiz quiz = new Quiz();
         quiz.setQuestions(questions);
 
         return quizDao.save(quiz);
     }
 
-
-
-
-
-    public ResponseEntity<Integer> calculateScore(Integer id, List<Response> responses) {
-        List<Question> questions= getQuizQuestionsById(id);
+    public Integer calculateScore(Integer id,
+                                  List<Response> responses) {
+        List<Question> questions = quizDao.findAllById(id).get().getQuestions();
         int right = 0;
-        int i = 0;
+        int next = 0;
 
         for (Response resp : responses) {
             String response = resp.getScore();
-            String correctAnswer = questions.get(i).getCorrectAnswer();
+            String correctAnswer = questions.get(next).getCorrectAnswer();
 
             if (response.equals(correctAnswer))
                 right++;
 
-            i++;
+            next++;
         }
-        return new ResponseEntity<>(right, HttpStatus.OK);
+        return right;
     }
-
-    private List<Question> getQuizQuestionsById(Integer id) {
-        Optional<Quiz> quiz = quizDao.findAllById(id);
-
-        return quiz.get().getQuestions();
-
-    }
-
 
     public void deleteQuiz(Integer id) {
         if (!quizDao.existsById(id)) {

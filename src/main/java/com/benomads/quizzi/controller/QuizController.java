@@ -7,6 +7,7 @@ import com.benomads.quizzi.entity.Quiz;
 import com.benomads.quizzi.model.Response;
 import com.benomads.quizzi.service.QuestionService;
 import com.benomads.quizzi.service.QuizService;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
 import org.springframework.http.HttpStatus;
@@ -49,17 +50,18 @@ public class QuizController {
         return ResponseEntity.created(URI.create("/api/quizzes" + createdQuiz.getId())).body(new ApiResponse(true, "Quiz created successfully!"));
     }
 
-    @PostMapping("/rt")
+    @PostMapping
     public ResponseEntity<ApiResponse> createQuiz(@RequestBody List<Question> questions) {
-        Quiz createdQuiz = quizService.createQuizes(questions);
+        Quiz createdQuiz = quizService.createQuiz(questions);
         return ResponseEntity.created(URI.create("/api/quizzes" + createdQuiz.getId()))
                              .body(new ApiResponse(true, "Quiz created successfully!"));
     }
 
     @PostMapping("/{id}/submit")
-    public ResponseEntity<Integer> submitQuiz(@PathVariable Integer id,
+    public ResponseEntity<String> submitQuiz(@PathVariable Integer id,
                                               @RequestBody List<Response> responses) {
-        return quizService.calculateScore(id, responses);
+        Integer score = quizService.calculateScore(id, responses);
+        return ResponseEntity.ok(String.format("Number of correct answers: %d", score));
     }
 
     @DeleteMapping("/{id}")
