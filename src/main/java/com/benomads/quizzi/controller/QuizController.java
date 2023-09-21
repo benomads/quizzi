@@ -60,6 +60,14 @@ public class QuizController {
         return ResponseEntity.ok(String.format("Number of correct answers: %d", score));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Quiz> changeQuiz(@PathVariable Integer id,
+                                             @RequestBody Quiz quiz) {
+        Quiz changedQuiz = quizService.changeExistingQuiz(id, quiz);
+
+        return ResponseEntity.ok(changedQuiz);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteQuiz(@PathVariable Integer id) {
         quizService.deleteQuiz(id);

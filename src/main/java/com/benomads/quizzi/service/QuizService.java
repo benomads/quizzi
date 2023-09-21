@@ -54,7 +54,6 @@ public class QuizService {
         if (questions.isEmpty())
             throw new RuntimeException("Not Found any Question!!!");
 
-
         Quiz quiz = new Quiz();
         quiz.setTitle(title);
         quiz.setQuestions(questions);
@@ -65,6 +64,13 @@ public class QuizService {
 
         Quiz quiz = new Quiz();
         quiz.setQuestions(questions);
+
+        return quizDao.save(quiz);
+    }
+
+    public Quiz changeExistingQuiz(Integer quizId, Quiz quiz) {
+        if(!quizDao.existsById(quizId))
+            throw new QuizNotFoundException(String.format("Quiz with id=%d not found!", quizId));
 
         return quizDao.save(quiz);
     }
