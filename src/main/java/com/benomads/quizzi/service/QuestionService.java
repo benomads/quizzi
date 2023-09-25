@@ -4,7 +4,6 @@ import com.benomads.quizzi.entity.Question;
 import com.benomads.quizzi.dao.QuestionDao;
 import com.benomads.quizzi.exception.QuestionAlreadyExistException;
 import com.benomads.quizzi.exception.QuestionNotFoundException;
-import com.benomads.quizzi.exception.QuizNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
