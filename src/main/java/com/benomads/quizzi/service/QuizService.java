@@ -33,7 +33,7 @@ public class QuizService {
     }
 
     public List<QuestionWrapper> getQuizById(Integer id) {
-        Optional<Quiz> quiz = quizDao.findAllById(id);
+        Optional<Quiz> quiz = quizDao.findAllByQuizId(id);
         if (quiz.isEmpty())
             throw new QuizNotFoundException(String.format("Quiz with id=%d not found!", id));
 
@@ -60,10 +60,9 @@ public class QuizService {
         return quizDao.save(quiz);
     }
 
-    public Quiz createQuiz(List<Question> questions) {
+    public Quiz createQuiz(Quiz quiz) {
 
-        Quiz quiz = new Quiz();
-        quiz.setQuestions(questions);
+//        Quiz quiz = new Quiz();
 
         return quizDao.save(quiz);
     }
@@ -77,7 +76,7 @@ public class QuizService {
 
     public Integer calculateScore(Integer id,
                                   List<Response> responses) {
-        Optional<Quiz> quiz = quizDao.findAllById(id);
+        Optional<Quiz> quiz = quizDao.findAllByQuizId(id);
         if (quiz.isEmpty())
             throw new QuizNotFoundException(String.format(
                 "Quiz with id=%d not found!", id));

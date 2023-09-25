@@ -1,6 +1,5 @@
 package com.benomads.quizzi.controller;
 
-import com.benomads.quizzi.entity.Question;
 import com.benomads.quizzi.model.ApiResponse;
 import com.benomads.quizzi.model.QuestionWrapper;
 import com.benomads.quizzi.entity.Quiz;
@@ -43,13 +42,13 @@ public class QuizController {
                                              @RequestParam("numQ") int numberOfQuestions,
                                              @RequestParam String title) {
         Quiz createdQuiz = quizService.createQuiz(category, numberOfQuestions, title);
-        return ResponseEntity.created(URI.create("/api/quizzes" + createdQuiz.getId())).body(new ApiResponse(true, "Quiz created successfully!"));
+        return ResponseEntity.created(URI.create("/api/quizzes" + createdQuiz.getQuizId())).body(new ApiResponse(true, "Quiz created successfully!"));
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse> createQuiz(@RequestBody List<Question> questions) {
-        Quiz createdQuiz = quizService.createQuiz(questions);
-        return ResponseEntity.created(URI.create("/api/quizzes" + createdQuiz.getId()))
+    public ResponseEntity<ApiResponse> createQuiz(@RequestBody Quiz quiz) {
+        Quiz createdQuiz = quizService.createQuiz(quiz);
+        return ResponseEntity.created(URI.create("/api/quizzes" + createdQuiz.getQuizId()))
                              .body(new ApiResponse(true, "Quiz created successfully!"));
     }
 

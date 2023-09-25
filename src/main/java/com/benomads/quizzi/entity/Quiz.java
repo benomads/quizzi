@@ -12,7 +12,7 @@ public class Quiz {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer quizId;
 
     private String title;
 

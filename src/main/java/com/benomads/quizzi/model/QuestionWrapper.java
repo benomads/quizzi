@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class QuestionWrapper {
 
-    private Long id;
+    private Long questionWrapperId;
     private String questionTitle;
     private String option1;
     private String option2;
@@ -17,7 +17,7 @@ public class QuestionWrapper {
 
     public static QuestionWrapper toModel(Question question) {
         QuestionWrapper model = new QuestionWrapper();
-        model.setId(question.getId());
+        model.setQuestionWrapperId(question.getQuestionId());
         model.setQuestionTitle(question.getQuestionTitle());
         model.setOption1(question.getOption1());
         model.setOption2(question.getOption2());

@@ -48,7 +48,7 @@ public class QuestionController {
     @PostMapping
     public ResponseEntity<?> createQuestion(@RequestBody Question question) {
         Question createdQuestion = questionService.addQuestion(question);
-        return ResponseEntity.created(URI.create("/api/questions" + createdQuestion.getId()))
+        return ResponseEntity.created(URI.create("/api/questions" + createdQuestion.getQuestionId()))
                              .body(new ApiResponse(true, "Question created successfully!"));
     }
 
