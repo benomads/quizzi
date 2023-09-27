@@ -12,8 +12,6 @@ import java.util.List;
 public interface QuestionDao extends JpaRepository<Question, Long> {
     List<Question> findQuestionByCategory(String category);
 
-    Question findQuestionByQuestionTitle(String questionTitle);
-
     Boolean existsQuestionByQuestionTitle(String questionTitle);
 
     Boolean existsQuestionByCategory(String category);
