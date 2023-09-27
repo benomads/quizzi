@@ -17,7 +17,7 @@ public class QuestionWrapper {
 
     public static QuestionWrapper toModel(Question question) {
         QuestionWrapper model = new QuestionWrapper();
-        model.setQuestionWrapperId(question.getQuestionId());
+        model.setQuestionWrapperId(question.getId());
         model.setQuestionTitle(question.getQuestionTitle());
         model.setOption1(question.getOption1());
         model.setOption2(question.getOption2());

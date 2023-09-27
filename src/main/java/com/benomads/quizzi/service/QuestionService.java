@@ -45,7 +45,7 @@ public class QuestionService {
         if (questionDao.existsQuestionByQuestionTitle(questionTitleFromRequest))
             throw new QuestionAlreadyExistException(
                 "Question already exist. Question with id="
-                    + question.getQuestionId() + " have same title of question");
+                    + question.getId() + " have same title of question");
 
         return questionDao.save(question);
     }

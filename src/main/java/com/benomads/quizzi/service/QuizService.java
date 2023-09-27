@@ -33,7 +33,7 @@ public class QuizService {
     }
 
     public List<QuestionWrapper> getQuizById(Integer id) {
-        Optional<Quiz> quiz = quizDao.findAllByQuizId(id);
+        Optional<Quiz> quiz = quizDao.findAllById(id);
         if (quiz.isEmpty())
             throw new QuizNotFoundException(String.format("Quiz with id=%d not found!", id));
 
@@ -76,7 +76,7 @@ public class QuizService {
 
     public Integer calculateScore(Integer id,
                                   List<Response> responses) {
-        Optional<Quiz> quiz = quizDao.findAllByQuizId(id);
+        Optional<Quiz> quiz = quizDao.findAllById(id);
         if (quiz.isEmpty())
             throw new QuizNotFoundException(String.format(
                 "Quiz with id=%d not found!", id));

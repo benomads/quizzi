@@ -48,7 +48,7 @@ public class QuestionController {
     @PostMapping
     public ResponseEntity<?> createQuestion(@RequestBody Question question) {
         Question createdQuestion = questionService.addQuestion(question);
-        return ResponseEntity.created(URI.create("/api/questions" + createdQuestion.getQuestionId()))
+        return ResponseEntity.created(URI.create("/api/questions" + createdQuestion.getId()))
                              .body(new ApiResponse(true, "Question created successfully!"));
     }
 
@@ -57,7 +57,9 @@ public class QuestionController {
                                             @RequestBody Question question) {
         Question createdQuestion = questionService.changeQuestion(id, question);
 
-        return ResponseEntity.ok().body(String.format("Question with id=%d changed successfully", id) + createdQuestion);
+        return ResponseEntity.ok().body(String.format(
+            "Question with id=%d changed successfully \n Data: ", id)
+            + createdQuestion);
     }
 
 
