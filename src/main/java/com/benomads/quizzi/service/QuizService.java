@@ -35,7 +35,8 @@ public class QuizService {
     public List<QuestionWrapper> getQuizById(Integer id) {
         Optional<Quiz> quiz = quizDao.findAllById(id);
         if (quiz.isEmpty())
-            throw new QuizNotFoundException(String.format("Quiz with id=%d not found!", id));
+            throw new QuizNotFoundException(
+                String.format("Quiz with id=%d not found!", id));
 
         List<Question> questionsFromDB = quiz.get().getQuestions();
         List<QuestionWrapper> questionsForUser = new ArrayList<>();
@@ -49,7 +50,11 @@ public class QuizService {
     public Quiz createQuizTest(String category,
                            int numberOfQuestions,
                            String title) {
-        List<Question> questions = questionDao.findRandomQuestionsByCategory(category, numberOfQuestions);
+        List<Question> questions = questionDao
+            .findRandomQuestionsByCategory(
+                category,
+                numberOfQuestions
+            );
 
         if (questions.isEmpty())
             throw new RuntimeException("Not Found any Question!!!");
@@ -68,7 +73,8 @@ public class QuizService {
 
     public Quiz changeExistingQuiz(Integer quizId, Quiz quiz) {
         if(!quizDao.existsById(quizId))
-            throw new QuizNotFoundException(String.format("Quiz with id=%d not found!", quizId));
+            throw new QuizNotFoundException(
+                String.format("Quiz with id=%d not found!", quizId));
 
         return quizDao.save(quiz);
     }
@@ -76,6 +82,7 @@ public class QuizService {
     public Integer calculateScore(Integer id,
                                   List<Response> responses) {
         Optional<Quiz> quiz = quizDao.findAllById(id);
+
         if (quiz.isEmpty())
             throw new QuizNotFoundException(String.format(
                 "Quiz with id=%d not found!", id));

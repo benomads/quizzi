@@ -75,7 +75,7 @@ public class QuizController {
 
     @PostMapping("/{id}/submit")
     public ResponseEntity<String> submitQuiz(@PathVariable Integer id,
-                                              @RequestBody List<Response> responses) {
+                                             @RequestBody List<Response> responses) {
         Integer score = quizService.calculateScore(id, responses);
         return ResponseEntity
             .ok(String
@@ -84,7 +84,7 @@ public class QuizController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Quiz> changeQuiz(@PathVariable Integer id,
-                                             @RequestBody Quiz quiz) {
+                                           @RequestBody Quiz quiz) {
         Quiz changedQuiz = quizService.changeExistingQuiz(id, quiz);
 
         return ResponseEntity.ok(changedQuiz);
