@@ -45,6 +45,15 @@ public class QuestionController {
         return ResponseEntity.ok(questions);
     }
 
+    @GetMapping("/level/{difficultyLevel}")
+    public ResponseEntity<List<Question>> getQuestionsByDifficultyLevel(
+            @PathVariable String difficultyLevel) {
+
+        List<Question> questions = questionService.getQuestionsByDifficultyLevel(difficultyLevel);
+
+        return ResponseEntity.ok(questions);
+    }
+
     @PostMapping
     public ResponseEntity<?> createQuestion(@RequestBody Question question) {
         Question createdQuestion = questionService.addQuestion(question);

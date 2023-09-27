@@ -46,7 +46,7 @@ public class QuizService {
     }
 
     // This method create(assembling) quiz randomly with existing questions
-    public Quiz createQuiz(String category,
+    public Quiz createQuizTest(String category,
                            int numberOfQuestions,
                            String title) {
         List<Question> questions = questionDao.findRandomQuestionsByCategory(category, numberOfQuestions);
@@ -61,9 +61,8 @@ public class QuizService {
     }
 
     public Quiz createQuiz(Quiz quiz) {
-
-//        Quiz quiz = new Quiz();
-
+        if (quiz == null)
+            throw new QuizNotFoundException("Quiz not found!");
         return quizDao.save(quiz);
     }
 

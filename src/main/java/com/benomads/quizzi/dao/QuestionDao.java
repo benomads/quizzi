@@ -12,9 +12,13 @@ import java.util.List;
 public interface QuestionDao extends JpaRepository<Question, Long> {
     List<Question> findQuestionByCategory(String category);
 
+    List<Question> findQuestionByDifficultyLevel(String difficultyLevel);
+
     Boolean existsQuestionByQuestionTitle(String questionTitle);
 
     Boolean existsQuestionByCategory(String category);
+
+    Boolean existsQuestionByDifficultyLevel(String difficultyLevel);
 
 
 

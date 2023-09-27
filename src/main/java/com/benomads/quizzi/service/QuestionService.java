@@ -39,6 +39,14 @@ public class QuestionService {
         return questionDao.findQuestionByCategory(category);
     }
 
+    public List<Question> getQuestionsByDifficultyLevel(String difficultyLevel) {
+        if (!questionDao.existsQuestionByDifficultyLevel(difficultyLevel))
+            throw new QuestionNotFoundException(String.format(
+                "Questions with level - '%s' not found", difficultyLevel));
+
+        return questionDao.findQuestionByDifficultyLevel(difficultyLevel);
+    }
+
     public Question addQuestion(Question question) {
         String questionTitleFromRequest = question.getQuestionTitle();
 
@@ -68,6 +76,7 @@ public class QuestionService {
 
         questionDao.deleteById(id);
     }
+
 
 
 }
