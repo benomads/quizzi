@@ -4,6 +4,7 @@ import com.benomads.quizzi.entity.Question;
 import com.benomads.quizzi.dao.QuestionDao;
 import com.benomads.quizzi.exception.QuestionAlreadyExistException;
 import com.benomads.quizzi.exception.QuestionNotFoundException;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,24 +26,27 @@ public class QuestionService {
     public Optional<Question> getQuestionById(Long id)  {
         Optional<Question> question = questionDao.findById(id);
         if (question.isEmpty())
-            throw new QuestionNotFoundException(String.format(
-                "Question with id=%d not found", id));
+            throw new QuestionNotFoundException(
+                String.format(
+                    "Question with id=%d not found", id));
 
         return question;
     }
 
     public List<Question> getQuestionsByCategory(String category) {
         if (!questionDao.existsQuestionByCategory(category))
-            throw new QuestionNotFoundException(String.format(
-                "Questions with category - '%s' not found", category));
+            throw new QuestionNotFoundException(
+                String.format(
+                    "Questions with category - '%s' not found", category));
 
         return questionDao.findQuestionByCategory(category);
     }
 
     public List<Question> getQuestionsByDifficultyLevel(String difficultyLevel) {
         if (!questionDao.existsQuestionByDifficultyLevel(difficultyLevel))
-            throw new QuestionNotFoundException(String.format(
-                "Questions with level - '%s' not found", difficultyLevel));
+            throw new QuestionNotFoundException(
+                String.format(
+                    "Questions with level - '%s' not found", difficultyLevel));
 
         return questionDao.findQuestionByDifficultyLevel(difficultyLevel);
     }
@@ -51,9 +55,9 @@ public class QuestionService {
         String questionTitleFromRequest = question.getQuestionTitle();
 
         if (questionDao.existsQuestionByQuestionTitle(questionTitleFromRequest))
-            throw new QuestionAlreadyExistException(
-                "Question already exist. Question with id="
-                    + question.getId() + " have same title of question");
+            throw new QuestionAlreadyExistException(String.format(
+                "Question already exist. Question with id=%d " +
+                    "have same title of question", question.getId()));
 
         return questionDao.save(question);
     }
@@ -61,8 +65,9 @@ public class QuestionService {
     public Question changeQuestion(Long id,
                                    Question question) {
         if (!questionDao.existsById(id))
-            throw new QuestionNotFoundException(String.format(
-                "Question with id=%d not found", id));
+            throw new QuestionNotFoundException(
+                String.format(
+                    "Question with id=%d not found", id));
 
         return questionDao.save(question);
     }
@@ -70,8 +75,9 @@ public class QuestionService {
     public void deleteQuestion(Long id) {
         Optional<Question> question = questionDao.findById(id);
         if (question.isEmpty()) {
-            throw new QuestionNotFoundException(String.format(
-                "Question with id=%d doesn't exist", id));
+            throw new QuestionNotFoundException(
+                String.format(
+                    "Question with id=%d doesn't exist", id));
         }
 
         questionDao.deleteById(id);

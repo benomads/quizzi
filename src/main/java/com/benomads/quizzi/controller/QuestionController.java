@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/questions")
+@RequestMapping("/api/v1/questions")
 public class QuestionController {
 
     private final QuestionService questionService;
@@ -25,14 +25,18 @@ public class QuestionController {
     public ResponseEntity<List<Question>> getAllQuestions() {
         List<Question> questions = questionService.getAllQuestions();
 
-        return ResponseEntity.ok(questions);
+        return ResponseEntity
+            .ok()
+            .body(questions);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Question>> getQuestionById(@PathVariable Long id){
         Optional<Question> question = questionService.getQuestionById(id);
 
-        return ResponseEntity.ok(question);
+        return ResponseEntity
+            .ok()
+            .body(question);
 
     }
 
@@ -42,7 +46,9 @@ public class QuestionController {
 
         List<Question> questions = questionService.getQuestionsByCategory(category);
 
-        return ResponseEntity.ok(questions);
+        return ResponseEntity
+            .ok()
+            .body(questions);
     }
 
     @GetMapping("/level/{difficultyLevel}")
@@ -51,34 +57,44 @@ public class QuestionController {
 
         List<Question> questions = questionService.getQuestionsByDifficultyLevel(difficultyLevel);
 
-        return ResponseEntity.ok(questions);
+        return ResponseEntity
+            .ok()
+            .body(questions);
     }
 
     @PostMapping
     public ResponseEntity<?> createQuestion(@RequestBody Question question) {
         Question createdQuestion = questionService.addQuestion(question);
-        return ResponseEntity.created(URI.create("/api/questions" + createdQuestion.getId()))
-                             .body(new ApiResponse(true, "Question created successfully!"));
+        return ResponseEntity
+            .created(URI
+                .create("/api/questions" + createdQuestion.getId()))
+            .body(
+                new ApiResponse(
+                    true,
+                    "Question created successfully!"));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> changeQuestion(@PathVariable Long id,
                                             @RequestBody Question question) {
         Question createdQuestion = questionService.changeQuestion(id, question);
-
-        return ResponseEntity.ok().body(String.format(
-            "Question with id=%d changed successfully \n Data: ", id)
-            + createdQuestion);
+        return ResponseEntity
+            .ok()
+            .body(
+                String.format("Question with id=%d changed successfully \n Data: ", id)
+                                                                    + createdQuestion);
     }
 
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteQuestion(@PathVariable Long id) {
         questionService.deleteQuestion(id);
-        return ResponseEntity.ok().body(
-            new ApiResponse(
-            true,
-            String.format(
-                "Question with id=%d deleted successfully!", id)));
+        return ResponseEntity
+            .ok()
+            .body(
+                new ApiResponse(
+                    true,
+                    String.format(
+                        "Question with id=%d deleted successfully!", id)));
     }
 }

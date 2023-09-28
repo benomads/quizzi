@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/quizzes")
+@RequestMapping(path = "/api/v1/quizzes")
 public class QuizController {
 
     private final QuizService quizService;
@@ -27,19 +27,23 @@ public class QuizController {
     public ResponseEntity<List<Quiz>> getAllQuizzes() {
         List<Quiz> quizzes = quizService.getAllQuizzes();
 
-        return ResponseEntity.ok(quizzes);
+        return ResponseEntity
+            .ok()
+            .body(quizzes);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<List<QuestionWrapper>> getQuizById(@PathVariable Integer id) {
         List<QuestionWrapper> questionWrappers = quizService.getQuizById(id);
 
-        return ResponseEntity.ok(questionWrappers);
+        return ResponseEntity
+            .ok()
+            .body(questionWrappers);
     }
 
     // This POST request create(assembling) quiz randomly with existing questions
     @PostMapping("/random")
-    public ResponseEntity<ApiResponse> createQuizWithExistsQuestions(
+    public ResponseEntity<ApiResponse> createRandomQuiz(
             @RequestBody RequestForCreatingRandomQuiz request) {
 
         Quiz createdQuiz = quizService.createQuizTest(
@@ -55,8 +59,7 @@ public class QuizController {
             .body(
                 new ApiResponse(
                     true,
-                    "Quiz created successfully!")
-            );
+                    "Quiz created successfully!"));
     }
 
     @PostMapping
@@ -76,27 +79,32 @@ public class QuizController {
     @PostMapping("/{id}/submit")
     public ResponseEntity<String> submitQuiz(@PathVariable Integer id,
                                              @RequestBody List<Response> responses) {
+
         Integer score = quizService.calculateScore(id, responses);
         return ResponseEntity
-            .ok(String
-                .format("Number of correct answers: %d", score));
+            .ok()
+            .body(
+                String.format("Number of correct answers: %d", score));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Quiz> changeQuiz(@PathVariable Integer id,
                                            @RequestBody Quiz quiz) {
         Quiz changedQuiz = quizService.changeExistingQuiz(id, quiz);
-
-        return ResponseEntity.ok(changedQuiz);
+        return ResponseEntity
+            .ok()
+            .body(changedQuiz);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteQuiz(@PathVariable Integer id) {
         quizService.deleteQuiz(id);
-        return ResponseEntity.ok().body(
-            new ApiResponse(
-                true,
-                String.format(
-                    "Quiz with id=%d deleted successfully!", id)));
+        return ResponseEntity
+            .ok()
+            .body(
+                new ApiResponse(
+                    true,
+                    String.format("Quiz with id=%d deleted successfully!", id)));
     }
+
 }
