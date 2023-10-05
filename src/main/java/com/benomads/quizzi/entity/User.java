@@ -5,12 +5,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 
-@Data
-//@Entity
+//@Data
+@Getter
+@Setter
+@Entity(name = "Users")
 public class User {
 
     @Id
@@ -21,15 +25,37 @@ public class User {
     private String lastName;
     private String email;
     private String password;
-    private Date dateOfBirth;
+//    private String dateOfBirth;
     private Character gender;
     private LocalDateTime createdAt;
 
-    //private List<User> friends; //TODO what we need choose here?
-    private String avatar;
-    private String role;
-    private String accessLevel;
-    private String aboutMe; //description???
+    public User(
+                String firstName,
+                String lastName,
+                String email,
+                String password,
+//                Date dateOfBirth,
+                Character gender
+                ) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+//        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public User() {
+
+    }
+
+    //    private List<User> friends; //TODO what we need choose here?
+
+//    private String role;
+//    private String avatar;
+//    private String accessLevel;
+//    private String aboutMe; //description???
 
 
 
