@@ -26,7 +26,7 @@ public class UserService {
     public User createUser(User user) {
         String userEmail = user.getEmail();
 
-        if (!userDao.existsUserByEmail(userEmail))
+        if (userDao.existsUserByEmail(userEmail))
             throw new IllegalStateException(
                 String.format(
                     "the User with same email: %s is exists.", userEmail));

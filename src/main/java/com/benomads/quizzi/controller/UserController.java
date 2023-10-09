@@ -25,15 +25,12 @@ public class UserController {
     }
 
     @GetMapping("/get")
-    public String getAllUsers() {
-        System.out.println("Test");
-//        List<User> users = userService.getAllUsers();
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
 
-        return "test";
-//
-//        return ResponseEntity
-//            .ok()
-//            .body(users);
+        return ResponseEntity
+            .ok()
+            .body(users);
     }
 
 
@@ -49,6 +46,8 @@ public class UserController {
                     true,
                     "User created successfully!"));
     }
+
+
 
 
 }
