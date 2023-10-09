@@ -1,6 +1,8 @@
 package com.benomads.quizzi.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,10 +20,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Size(min = 2, max = 50)
+    @NotBlank(message = "First Name is mandatory")
     private String firstName;
 
-    @Column(nullable = false)
+    @Size(min = 2, max = 50)
+    @NotBlank(message = "Last Name is mandatory")
     private String lastName;
 
     @Column(nullable = false)
