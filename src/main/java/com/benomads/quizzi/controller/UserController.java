@@ -24,7 +24,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/get")
+    @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
 
@@ -47,7 +47,18 @@ public class UserController {
                     "User created successfully!"));
     }
 
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.
+            ok()
+            .body(
+                new ApiResponse(
+                    true,
+                    String.format(
+                        "User with id=%d deleted successfully!", id))
+            );
+    }
 
 
 }

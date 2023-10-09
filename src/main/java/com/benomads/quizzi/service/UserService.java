@@ -35,4 +35,10 @@ public class UserService {
     }
 
 
+    public void deleteUser(Long id) {
+        if(!userDao.existsById(id))
+            throw new IllegalStateException("Can do it because it doesn't exists");
+
+        userDao.deleteById(id);
+    }
 }
