@@ -10,5 +10,7 @@ import java.util.Optional;
 public interface QuizDao extends JpaRepository<Quiz, Integer> {
     Optional<Quiz> findAllById(Integer id);
 
+    Boolean existsQuizByTitle(String title);
+
 
 }

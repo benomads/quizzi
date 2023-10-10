@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleQuestionNotFoundException(Exception ex, //We need to replace Exception.class
                                                                   HttpServletRequest request) {
 
-        ApiException apiException = getApiException(ex, request, httpFoundErrorStatus);
+        ApiException apiException = getApiException(ex, request, httpNotFoundErrorStatus);
         return new ResponseEntity<>(apiException, httpNotFoundErrorStatus);
     }
 
@@ -37,8 +37,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleQuizNotFoundException(Exception ex,
                                                               HttpServletRequest request) {
 
-        ApiException apiException = getApiException(ex, request, httpFoundErrorStatus);
+        ApiException apiException = getApiException(ex, request, httpNotFoundErrorStatus);
         return new ResponseEntity<>(apiException, httpNotFoundErrorStatus);
+    }
+
+    @ExceptionHandler(QuizAlreadyExistsException.class)
+    public ResponseEntity<Object> handleQuizAlreadyExistException(Exception ex,
+                                                                  HttpServletRequest request) {
+
+        ApiException apiException = getApiException(ex, request, httpFoundErrorStatus);
+        return new ResponseEntity<>(apiException, httpFoundErrorStatus);
     }
 
 
@@ -46,7 +54,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleUserNotFoundException(Exception ex, //We need to replace Exception.class
                                                                   HttpServletRequest request) {
 
-        ApiException apiException = getApiException(ex, request, httpFoundErrorStatus);
+        ApiException apiException = getApiException(ex, request, httpNotFoundErrorStatus);
         return new ResponseEntity<>(apiException, httpNotFoundErrorStatus);
     }
 

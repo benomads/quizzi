@@ -3,6 +3,7 @@ package com.benomads.quizzi.service;
 import com.benomads.quizzi.dao.QuestionDao;
 import com.benomads.quizzi.dao.QuizDao;
 import com.benomads.quizzi.entity.Question;
+import com.benomads.quizzi.exception.QuizAlreadyExistsException;
 import com.benomads.quizzi.exception.QuizNotFoundException;
 import com.benomads.quizzi.model.QuestionWrapper;
 import com.benomads.quizzi.entity.Quiz;
@@ -68,6 +69,13 @@ public class QuizService {
     public Quiz createQuiz(Quiz quiz) {
         if (quiz == null)
             throw new QuizNotFoundException("Quiz not found!");
+
+        if(quizDao.existsQuizByTitle(quiz.getTitle()))
+            throw new QuizAlreadyExistsException(
+                String.format(
+                    "Question already exist. Question with id=%d " +
+                        "have same title of question", quiz.getId()));
+
         return quizDao.save(quiz);
     }
 
