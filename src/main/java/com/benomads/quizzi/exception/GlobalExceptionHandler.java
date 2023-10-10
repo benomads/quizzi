@@ -66,4 +66,23 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(apiException, httpNotFoundErrorStatus);
     }
+
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Object> handleUserNotFoundException(Exception ex, //We need to replace Exception.class
+                                                                  HttpServletRequest request) {
+
+
+        ApiException apiException =
+            new ApiException(
+                ZonedDateTime.now(ZoneId.of("UTC+6")),
+                httpNotFoundErrorStatus.value(),
+                httpNotFoundErrorStatus,
+                ex.getMessage(),
+                request.getRequestURI()
+            );
+
+
+        return new ResponseEntity<>(apiException, httpNotFoundErrorStatus);
+    }
 }

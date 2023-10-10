@@ -1,6 +1,7 @@
 package com.benomads.quizzi.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -29,15 +30,19 @@ public class User {
     private String lastName;
 
     @Column(nullable = false)
+    @Email(regexp = ".+[@].+[\\.].+", message = "Example: example@domein.com")
     private String email;
 
+    @Size(min = 6, max = 25, message = "The numbers of symbols should be between 6-25.")
     @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
+    @NotBlank(message = "Example: 1995-07-25")
     private String dateOfBirth;
 
     @Column(nullable = false)
+    @NotBlank(message = "Man = 'M' and Woman = 'M'")
     private Character gender;
 
     @CreationTimestamp

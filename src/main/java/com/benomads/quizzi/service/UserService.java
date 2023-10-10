@@ -2,6 +2,7 @@ package com.benomads.quizzi.service;
 
 import com.benomads.quizzi.dao.UserDao;
 import com.benomads.quizzi.entity.User;
+import com.benomads.quizzi.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +38,9 @@ public class UserService {
 
     public void deleteUser(Long id) {
         if(!userDao.existsById(id))
-            throw new IllegalStateException("Can do it because it doesn't exists");
+            throw new UserNotFoundException(
+                String.format(
+                    "Question with id=%d not found", id));
 
         userDao.deleteById(id);
     }
