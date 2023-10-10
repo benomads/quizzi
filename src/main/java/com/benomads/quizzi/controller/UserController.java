@@ -3,6 +3,7 @@ package com.benomads.quizzi.controller;
 import com.benomads.quizzi.entity.User;
 import com.benomads.quizzi.model.ApiResponse;
 import com.benomads.quizzi.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class UserController {
 
 
     @PostMapping
-    public ResponseEntity<ApiResponse> createUser(@RequestBody User user) {
+    public ResponseEntity<ApiResponse> createUser(@RequestBody @Valid User user) {
         User createdUser = userService.createUser(user);
 
         return ResponseEntity

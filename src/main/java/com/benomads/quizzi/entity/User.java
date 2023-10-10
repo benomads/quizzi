@@ -3,6 +3,7 @@ package com.benomads.quizzi.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class User {
 
     @Size(min = 2, max = 50)
     @NotBlank(message = "First Name is mandatory")
+//    @NotNull(message = "Invalid first name: First name is NULL")
     private String firstName;
 
     @Size(min = 2, max = 50)
@@ -42,7 +44,7 @@ public class User {
     private String dateOfBirth;
 
     @Column(nullable = false)
-    @NotBlank(message = "Man = 'M' and Woman = 'M'")
+//    @NotBlank(message = "Man = 'M' and Woman = 'M'")
     private Character gender;
 
     @CreationTimestamp
@@ -50,12 +52,11 @@ public class User {
     private LocalDateTime createdAt;
 
 
-//    private List<User> friends; TODO what we need choose here?
-//
-//    private String role;
-//    private String avatar;
-//    private String accessLevel;
-//    private String aboutMe; //description???
+
+
+// TODO Mb we need to add fields friends, role, avatar, accessLevel, aboutMe
+
+
 
 
 
