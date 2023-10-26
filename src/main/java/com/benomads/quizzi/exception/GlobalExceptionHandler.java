@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -58,6 +60,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(apiException, httpNotFoundErrorStatus);
     }
 
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public ResponseEntity<Object> handleMethodArgumentNotValidException(
+//            MethodArgumentNotValidException ex) {
+//
+//        Map<String, String> errorResponse = new HashMap<>();
+//
+//        errorResponse.put("error", ex);
+//
+//        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+//    }
 
     private static ApiException getApiException(Exception ex, HttpServletRequest request, HttpStatus httpStatus) {
         return

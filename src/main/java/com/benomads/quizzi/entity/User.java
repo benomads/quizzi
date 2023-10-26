@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Data
 @Getter
 @Setter
-@Entity(name = "Users")
+@Entity(name = "\"Users\"")
 public class User {
 
     @Id
@@ -24,27 +24,25 @@ public class User {
 
     @Size(min = 2, max = 50)
     @NotBlank(message = "First Name is mandatory")
-//    @NotNull(message = "Invalid first name: First name is NULL")
     private String firstName;
 
     @Size(min = 2, max = 50)
     @NotBlank(message = "Last Name is mandatory")
     private String lastName;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Email is mandatory")
     @Email(regexp = ".+[@].+[\\.].+", message = "Example: example@domein.com")
     private String email;
 
     @Size(min = 6, max = 25, message = "The numbers of symbols should be between 6-25.")
-    @Column(nullable = false)
+    @NotBlank(message = "password is mandatory")
     private String password;
 
-    @Column(nullable = false)
     @NotBlank(message = "Example: 1995-07-25")
     private String dateOfBirth;
 
-    @Column(nullable = false)
-//    @NotBlank(message = "Man = 'M' and Woman = 'M'")
+
+    @NotNull(message = "Man = 'M' and Woman = 'M'")
     private Character gender;
 
     @CreationTimestamp
